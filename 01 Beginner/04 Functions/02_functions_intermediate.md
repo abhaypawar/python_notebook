@@ -103,3 +103,109 @@ local_example()
   
 - **Global vs. Local Variables**: Understanding variable scope is crucial; modifying global variables inside functions using the `global` keyword and recognizing local variables are scoped within their defining function.
 
+
+
+### 5. **Memoization**  
+   **Optimizing Recursive Functions**  
+   Memoization is a technique to optimize recursive functions by storing previously computed results. This can significantly improve performance for functions with overlapping subproblems, such as calculating Fibonacci numbers.
+   ```python
+   def fibonacci(n, memo={}):
+       if n in memo:
+           return memo[n]
+       if n <= 1:
+           return n
+       memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo)
+       return memo[n]
+
+   print(fibonacci(10))  # Output: 55
+   ```
+
+### 6. **Function Decorators**  
+   **Enhancing Functionality with Decorators**  
+   Decorators allow you to modify or enhance the behavior of functions without changing their code. They are often used for logging, access control, and memoization.
+   ```python
+   def timer_decorator(func):
+       import time
+       def wrapper(*args, **kwargs):
+           start_time = time.time()
+           result = func(*args, **kwargs)
+           end_time = time.time()
+           print(f"Function '{func.__name__}' executed in {end_time - start_time:.4f} seconds.")
+           return result
+       return wrapper
+
+   @timer_decorator
+   def compute_square(n):
+       return n * n
+
+   print(compute_square(1000000))  # Outputs execution time along with the result
+   ```
+
+### 7. **Context Managers**  
+   **Managing Resources with `with` Statement**  
+   Context managers allow you to allocate and release resources precisely when you want to. The `with` statement simplifies exception handling by encapsulating common preparation and cleanup tasks.
+   ```python
+   class FileManager:
+       def __init__(self, filename):
+           self.filename = filename
+
+       def __enter__(self):
+           self.file = open(self.filename, 'w')
+           return self.file
+
+       def __exit__(self, exc_type, exc_value, traceback):
+           self.file.close()
+
+   with FileManager('test.txt') as f:
+       f.write("Hello, World!")
+
+   # The file is automatically closed after exiting the with block.
+   ```
+
+### 8. **Generator Functions**  
+   **Using `yield` to Create Generators**  
+   Generator functions allow you to declare a function that behaves like an iterator. They use the `yield` statement to produce a series of values lazily, meaning they can generate values on the fly and save memory.
+   ```python
+   def count_up_to(max):
+       count = 1
+       while count <= max:
+           yield count
+           count += 1
+
+   for number in count_up_to(5):
+       print(number)  # Output: 1, 2, 3, 4, 5
+   ```
+
+### 9. **Callable Objects**  
+   **Creating Functions with Classes**  
+   In Python, you can create callable objects by defining a `__call__` method in a class. This allows instances of the class to be called like functions.
+   ```python
+   class Adder:
+       def __init__(self, value):
+           self.value = value
+
+       def __call__(self, x):
+           return self.value + x
+
+   add_five = Adder(5)
+   print(add_five(10))  # Output: 15
+   ```
+
+### 10. **Using Functions in Multithreading or Multiprocessing**  
+    **Executing Functions Concurrently**  
+    Python's `threading` and `multiprocessing` libraries allow you to run functions concurrently, enabling efficient resource utilization and improved performance in I/O-bound or CPU-bound tasks.
+    ```python
+    import threading
+
+    def print_numbers():
+        for i in range(5):
+            print(i)
+
+    thread = threading.Thread(target=print_numbers)
+    thread.start()
+    thread.join()  # Wait for the thread to finish
+    ```
+
+---
+
+
